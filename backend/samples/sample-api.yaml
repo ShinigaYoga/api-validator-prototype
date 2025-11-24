@@ -1,0 +1,25 @@
+openapi: "3.0.1"
+info:
+  title: Sample Product API
+  version: "1.0"
+paths:
+  /product:
+    get:
+      summary: Get product list
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Create product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+              required:
+                - name
