@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Hermes - AI API Documentation Generator</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Prism.js for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h1>Project Hermes</h1>
+            <p class="subtitle">AI-Powered API Documentation & SDK Generator</p>
+        </header>
+
+        <div class="main-content">
+            <div class="upload-section">
+                <div class="upload-box" id="uploadBox">
+                    <div class="upload-icon">
+                        <i class="fas fa-file-code"></i>
+                    </div>
+                    <p class="upload-text">Upload your basic API YAML to generate comprehensive documentation & SDKs</p>
+                    
+                    <div class="file-input-wrapper">
+                        <input type="file" id="fileInput" accept=".yaml,.yml,.json">
+                        <button class="file-input-button">
+                            <i class="fas fa-folder-open"></i> Choose API Spec
+                        </button>
+                    </div>
+                    
+                    <p class="file-info">Supports OpenAPI/Swagger YAML, JSON, or basic endpoint definitions</p>
+                    
+                    <div class="sample-buttons">
+                        <button class="sample-btn" id="loadSample">
+                            <i class="fas fa-vial"></i> Load Sample API
+                        </button>
+                    </div>
+                </div>
+
+                <div class="generation-controls">
+                    <h3>Generate Outputs:</h3>
+                    <div class="control-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="genDocumentation" checked>
+                            <span class="checkmark"></span>
+                            Comprehensive Documentation
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="genPythonSDK" checked>
+                            <span class="checkmark"></span>
+                            Python SDK
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="genJavaScriptSDK" checked>
+                            <span class="checkmark"></span>
+                            JavaScript SDK
+                        </label>
+                    </div>
+                    <button class="generate-btn" id="generateBtn">
+                        <i class="fas fa-magic"></i> Generate Documentation & SDKs
+                    </button>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-tabs">
+                    <button class="tab-btn active" data-tab="documentation">Documentation</button>
+                    <button class="tab-btn" data-tab="python">Python SDK</button>
+                    <button class="tab-btn" data-tab="javascript">JavaScript SDK</button>
+                    <button class="tab-btn" data-tab="raw">Raw YAML</button>
+                </div>
+
+                <div id="documentationTab" class="tab-content active">
+                    <div class="output-header">
+                        <div class="title-small">
+                            <i class="fas fa-book"></i> AI-Generated Documentation
+                        </div>
+                        <button class="copy-btn" id="copyDocBtn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="output-content documentation-content" id="documentationOutput">
+                        <div class="placeholder-text">
+                            <i class="fas fa-arrow-left"></i>
+                            <p>Upload your API specification and click "Generate" to create comprehensive documentation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pythonTab" class="tab-content">
+                    <div class="output-header">
+                        <div class="title-small">
+                            <i class="fab fa-python"></i> Python SDK
+                        </div>
+                        <button class="copy-btn" id="copyPythonBtn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="output-content">
+                        <pre><code class="language-python" id="pythonOutput"></code></pre>
+                    </div>
+                </div>
+
+                <div id="javascriptTab" class="tab-content">
+                    <div class="output-header">
+                        <div class="title-small">
+                            <i class="fab fa-js"></i> JavaScript SDK
+                        </div>
+                        <button class="copy-btn" id="copyJsBtn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="output-content">
+                        <pre><code class="language-javascript" id="javascriptOutput"></code></pre>
+                    </div>
+                </div>
+
+                <div id="rawTab" class="tab-content">
+                    <div class="output-header">
+                        <div class="title-small">
+                            <i class="fas fa-code"></i> Enhanced API Specification
+                        </div>
+                        <button class="copy-btn" id="copyRawBtn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="output-content">
+                        <pre><code class="language-yaml" id="rawOutput"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Project Hermes &copy; 2023 | AI-Powered Interface Automaton</p>
+        </footer>
+    </div>
+
+    <!-- JS-YAML library -->
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>
