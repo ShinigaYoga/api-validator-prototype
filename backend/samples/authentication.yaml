@@ -1,0 +1,48 @@
+openapi: "3.0.0"
+info:
+  title: Auth Service API
+  version: "1.0.0"
+
+paths:
+  /auth/login:
+    post:
+      summary: Login endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Successful login
+
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - name
+                - email
+                - password
+      responses:
+        '201':
+          description: User registered

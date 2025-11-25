@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Project Hermes</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        body {
+            font-family: Poppins, sans-serif;
+            background: #0d1117;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .auth-box {
+            width: 420px;
+            background: #161b22;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px #0008;
+            text-align: center;
+        }
+
+        .auth-box h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .auth-box h2 {
+            margin-bottom: 25px;
+            font-size: 26px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-top: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 18px;
+            border-radius: 8px;
+            border: none;
+            background: #007bff;
+            font-size: 15px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .google-btn {
+            background: #db4437;
+        }
+
+        .toggle-link {
+            margin-top: 18px;
+            cursor: pointer;
+            color: #58a6ff;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-box">
+        
+        <!-- ⭐ Added Project Hermes Title -->
+        <h1>Project Hermes</h1>
+
+        <h2 id="formTitle">Login</h2>
+
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Password" />
+
+        <button id="authBtn">Login</button>
+
+        <button class="google-btn" id="googleBtn">Sign in with Google</button>
+
+        <p class="toggle-link" id="toggleForm">
+            Don’t have an account? Sign Up
+        </p>
+    </div>
+
+    <!-- Firebase Auth (ES modules) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { 
+        getAuth, 
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        GoogleAuthProvider,
+        signInWithPopup 
+    } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCxNOGihrgrdOgYNsI5S7YrjaZS4xocW2E",
+        authDomain: "hermes-f8d74.firebaseapp.com",
+        projectId: "hermes-f8d74",
+        storageBucket: "hermes-f8d74.firebasestorage.app",
+        messagingSenderId: "312989523960",
+        appId: "1:312989523960:web:63694bc8c884ccf61c800d",
+        measurementId: "G-ZZNG5S580J"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    let isLogin = true;
+
+    document.getElementById("toggleForm").addEventListener("click", () => {
+        isLogin = !isLogin;
+        document.getElementById("formTitle").innerText = isLogin ? "Login" : "Sign Up";
+        document.getElementById("authBtn").innerText = isLogin ? "Login" : "Sign Up";
+        document.getElementById("toggleForm").innerText =
+            isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login";
+    });
+
+    document.getElementById("authBtn").addEventListener("click", () => {
+        const email = document.getElementById("email").value;
+        const pass = document.getElementById("password").value;
+
+        if (isLogin) {
+            signInWithEmailAndPassword(auth, email, pass)
+                .then(() => window.location.href = "index.html")
+                .catch(err => alert(err.message));
+        } else {
+            createUserWithEmailAndPassword(auth, email, pass)
+                .then(() => window.location.href = "index.html")
+                .catch(err => alert(err.message));
+        }
+    });
+
+    document.getElementById("googleBtn").addEventListener("click", () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then(() => window.location.href = "index.html")
+            .catch(err => alert(err.message));
+    });
+
+</script>
+
+</body>
+</html>
